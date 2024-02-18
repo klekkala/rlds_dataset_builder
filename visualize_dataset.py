@@ -35,11 +35,12 @@ ds = ds.shuffle(100)
 # visualize episodes
 for i, episode in enumerate(ds.take(5)):
     images = []
+    print(episode['steps'])
     for step in episode['steps']:
         images.append(step['observation']['image'].numpy())
     image_strip = np.concatenate(images[::4], axis=1)
-    caption = step['language_instruction'].numpy().decode() + ' (temp. downsampled 4x)'
-
+    #caption = step['language_instruction'].numpy().decode() + ' (temp. downsampled 4x)'
+    caption = "test"
     if render_wandb:
         wandb.log({f'image_{i}': wandb.Image(image_strip, caption=caption)})
     else:
@@ -52,11 +53,11 @@ actions, states = [], []
 for episode in tqdm.tqdm(ds.take(500)):
     for step in episode['steps']:
         actions.append(step['action'].numpy())
-        states.append(step['observation']['state'].numpy())
+        #states.append(step['observation']['state'].numpy())
 actions = np.array(actions)
-states = np.array(states)
+#states = np.array(states)
 action_mean = actions.mean(0)
-state_mean = states.mean(0)
+#state_mean = states.mean(0)
 
 def vis_stats(vector, vector_mean, tag):
     assert len(vector.shape) == 2
@@ -74,7 +75,7 @@ def vis_stats(vector, vector_mean, tag):
         wandb.log({tag: wandb.Image(fig)})
 
 vis_stats(actions, action_mean, 'action_stats')
-vis_stats(states, state_mean, 'state_stats')
+#vis_stats(states, state_mean, 'state_stats')
 
 if not render_wandb:
     plt.show()
