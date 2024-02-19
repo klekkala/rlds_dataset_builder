@@ -1,3 +1,3 @@
 from setuptools import setup
 
-setup(name="<name_of_your_dataset>", packages=["<name_of_your_dataset>"])
+setup(name="beo_nav_dataset", packages=["beo_nav_dataset"])
